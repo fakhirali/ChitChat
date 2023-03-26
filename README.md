@@ -7,7 +7,7 @@ In the meantime talk to john:
 TODO:
 - [x] Pre prompting
 - [ ] Optimized pre prompting
-	- Is it possible to tune the pre prompts in a way that produces the desired output. (Prompt Manager?)
+	- Is it possible to tune the pre prompts in a way that produces the desired output. (Prompt Manager? RLHF?)
 - [ ] Connecting to the internet
 	- [ ] Identify query and get wikipedia summary inside the pre prompt
 	- [ ] Give web search results in prompt. The chatbot should also cite the sources.
