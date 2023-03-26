@@ -2,7 +2,7 @@
 Trying to make a chatbot that has a better personality than me. 
 
 In the meantime talk to john:  
-`python john.py -- size medium --device cpu`
+`python john.py --size medium --device cpu`
 
 TODO:
 - [x] Pre prompting
