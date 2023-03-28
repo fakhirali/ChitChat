@@ -2,8 +2,8 @@
 Trying to make a chatbot that has a better personality than me. 
 
 In the meantime talk to john:  
-`python john.py --size medium --device cpu --persona advisor`
-to get options do 
+`python john.py --size medium --device cpu --persona advisor`  
+to get options do  
 `python john.py --help`
 
 TODO:
