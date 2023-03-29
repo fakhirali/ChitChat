@@ -28,5 +28,5 @@ The training data's composition should give insight into what prompting is
 required to "simulate" the desired response. For example when given a
 stack exchange structure type prompt, it may be better at math.
 
-**Pre prompting is all you need?**
+**Pre prompting is all you need?**(and a lot of data and compute)
 ![rlhf](rlhf_vs_norlhf.png)
