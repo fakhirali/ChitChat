@@ -21,21 +21,26 @@ parser.add_argument('--persona', type=str, choices=['advisor', 'programmer', 'sa
 args = parser.parse_args()
 
 
-from transformers import GPTNeoForCausalLM, GPT2TokenizerFast
+from transformers import AutoTokenizer, AutoModelForCausalLM
 device =  args.device
 if args.size == 'small':
-    model_name = 'EleutherAI/gpt-neo-125M'
+    model_name = 'EleutherAI/pythia-410m'
 elif args.size == 'medium':
-    model_name = 'EleutherAI/gpt-neo-1.3B'
+    model_name = 'EleutherAI/pythia-1.4b'
 elif args.size == 'large':
-    model_name = 'EleutherAI/gpt-neo-2.7B'
+    model_name = 'EleutherAI/pythia-2.8b'
 print("waking up John... ")
-model = GPTNeoForCausalLM.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name,max_position_embeddings=10_000,
+                                             ignore_mismatched_sizes=True)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+max_positions = model.config.max_position_embeddings
+for l in model.gpt_neox.layers:
+    l.attention.bias = torch.tril(torch.ones((max_positions, max_positions), dtype=torch.bool)).view(
+                                1, 1, max_positions, max_positions)
 model.to(device)
-tokenizer = GPT2TokenizerFast.from_pretrained(model_name)
-
+model.eval()
 @torch.no_grad()	
-def generate_response_greedy(input_text, pre_prompt, break_word,max_length=100,temp=0.5, name='',
+def generate_response_greedy(input_text, pre_prompt, break_word,max_length=100,temp=0.8, name='',
                             past_key_vals = None, next_id=None):
 
 #     print(pre_prompt, input_text)
