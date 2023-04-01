@@ -1,3 +1,4 @@
+
 import argparse
 import torch
 import gc
@@ -15,6 +16,7 @@ parser.add_argument('--size', type=str, choices=['small', 'medium', 'large'], de
 # Add a flag for the device to use
 parser.add_argument('--device', type=str, choices=['cpu', 'cuda'], default='cuda' if torch.cuda.is_available() else 'cpu', help='Device to use')
 parser.add_argument('--persona', type=str, choices=['advisor', 'programmer', 'salesman'], default='advisor')
+parser.add_argument('--temp', type=float,  default=0.5)
 
 
 # Parse the command line arguments
@@ -40,7 +42,7 @@ for l in model.gpt_neox.layers:
 model.to(device)
 model.eval()
 @torch.no_grad()	
-def generate_response_greedy(input_text, pre_prompt, break_word,max_length=100,temp=0.8, name='',
+def generate_response_greedy(input_text, pre_prompt, break_word,max_length=100,temp=args.temp, name='',
                             past_key_vals = None, next_id=None):
 
 #     print(pre_prompt, input_text)
