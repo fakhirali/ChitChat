@@ -26,19 +26,18 @@ args = parser.parse_args()
 from transformers import AutoTokenizer, AutoModelForCausalLM
 device =  args.device
 if args.size == 'small':
-    model_name = 'EleutherAI/pythia-410m'
+    model_name = 'EleutherAI/gpt-neo-125M'
 elif args.size == 'medium':
-    model_name = 'EleutherAI/pythia-1.4b'
+    model_name = 'EleutherAI/gpt-neo-1.3B'
 elif args.size == 'large':
-    model_name = 'EleutherAI/pythia-2.8b'
+    model_name = 'EleutherAI/gpt-neo-2.7B'
 print("waking up John... ")
-model = AutoModelForCausalLM.from_pretrained(model_name,max_position_embeddings=10_000,
-                                             ignore_mismatched_sizes=True)
+model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 max_positions = model.config.max_position_embeddings
-for l in model.gpt_neox.layers:
-    l.attention.bias = torch.tril(torch.ones((max_positions, max_positions), dtype=torch.bool)).view(
-                                1, 1, max_positions, max_positions)
+# for l in model.gpt_neox.layers:
+    # l.attention.bias = torch.tril(torch.ones((max_positions, max_positions), dtype=torch.bool)).view(
+                                # 1, 1, max_positions, max_positions)
 model.to(device)
 model.eval()
 @torch.no_grad()	
